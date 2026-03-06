@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { createReservationSchema } from '@/lib/validations/reservations'
+import { sendReservationConfirmation } from '@/lib/email'
 
 function generateConfirmationCode(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -68,6 +69,16 @@ export async function POST(request: NextRequest) {
         specialRequests,
       },
     })
+
+    // Send confirmation email (non-blocking)
+    sendReservationConfirmation({
+      guestName,
+      guestEmail,
+      confirmationCode,
+      reservationDate: date,
+      timeSlot,
+      partySize,
+    }).catch(console.error)
 
     return NextResponse.json({ reservationId: reservation.id, confirmationCode }, { status: 201 })
   } catch (error) {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { createOrderSchema } from '@/lib/validations/orders'
 import { generateOrderNumber } from '@/lib/utils'
+import { sendNewOrderNotification, sendOrderConfirmationToCustomer } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
@@ -108,12 +109,30 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // Send emails (non-blocking)
+    const emailData = {
+      orderNumber: order.orderNumber,
+      customerName,
+      customerEmail,
+      customerPhone,
+      type,
+      items: order.orderItems.map((oi: any) => ({
+        name: oi.menuItem.name,
+        quantity: oi.quantity,
+        unitPriceCents: oi.unitPriceCents,
+      })),
+      totalCents,
+      deliveryAddress,
+      deliveryCity,
+      specialInstructions,
+    }
+    Promise.all([
+      sendNewOrderNotification(emailData),
+      sendOrderConfirmationToCustomer(emailData),
+    ]).catch(console.error)
+
     return NextResponse.json(
-      {
-        orderId: order.id,
-        orderNumber: order.orderNumber,
-        totalCents,
-      },
+      { orderId: order.id, orderNumber: order.orderNumber, totalCents },
       { status: 201 }
     )
   } catch (error) {
