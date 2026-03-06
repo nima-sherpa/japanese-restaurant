@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { CartProvider } from '@/contexts/CartContext'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
-// Disable SSR for CartDrawer since it uses localStorage
 const CartDrawer = dynamic(() => import('@/components/cart/CartDrawer'), {
   ssr: false,
 })
@@ -17,13 +17,15 @@ export default function CustomerLayout({
   children: React.ReactNode
 }) {
   return (
-    <CartProvider>
-      <div className="flex flex-col min-h-screen">
-        <main className="flex-1">
-          {children}
-        </main>
-        <CartDrawer />
-      </div>
-    </CartProvider>
+    <ErrorBoundary>
+      <CartProvider>
+        <div className="flex flex-col min-h-screen">
+          <main className="flex-1">
+            {children}
+          </main>
+          <CartDrawer />
+        </div>
+      </CartProvider>
+    </ErrorBoundary>
   )
 }
