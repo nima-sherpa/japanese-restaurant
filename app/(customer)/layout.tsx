@@ -1,6 +1,11 @@
 import { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import { CartProvider } from '@/contexts/CartContext'
-import CartDrawer from '@/components/cart/CartDrawer'
+
+// Disable SSR for CartDrawer since it uses localStorage
+const CartDrawer = dynamic(() => import('@/components/cart/CartDrawer'), {
+  ssr: false,
+})
 
 export const metadata: Metadata = {
   title: 'Japanese Restaurant',
@@ -14,11 +19,9 @@ export default function CustomerLayout({
   return (
     <CartProvider>
       <div className="flex flex-col min-h-screen">
-        {/* Navigation will be added here */}
         <main className="flex-1">
           {children}
         </main>
-        {/* Footer will be added here */}
         <CartDrawer />
       </div>
     </CartProvider>

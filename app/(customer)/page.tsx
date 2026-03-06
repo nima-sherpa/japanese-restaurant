@@ -1,20 +1,17 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import MenuItemGrid from '@/components/menu/MenuItemGrid'
-
-export const metadata: Metadata = {
-  title: 'Home | Japanese Restaurant',
-  description: 'Experience authentic Japanese cuisine',
-}
-
-// Featured items component (will be hydrated client-side)
 import dynamic from 'next/dynamic'
 
 const FeaturedItemsGrid = dynamic(
   () => import('@/components/menu/FeaturedItemsGrid'),
   { loading: () => <div className="text-center py-12 text-gray-500">Loading featured dishes...</div> }
 )
+
+export const metadata: Metadata = {
+  title: 'Home | Japanese Restaurant',
+  description: 'Experience authentic Japanese cuisine',
+}
 
 export default function HomePage() {
   return (
@@ -51,10 +48,7 @@ export default function HomePage() {
             <FeaturedItemsGrid />
           </Suspense>
           <div className="text-center mt-8">
-            <Link
-              href="/menu"
-              className="text-jp-red font-semibold hover:underline"
-            >
+            <Link href="/menu" className="text-jp-red font-semibold hover:underline">
               View Full Menu →
             </Link>
           </div>
@@ -66,7 +60,8 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-serif font-bold mb-8 text-jp-black">About Us</h2>
           <p className="text-lg text-gray-700 mb-6">
-            Welcome to our restaurant. We bring authentic Japanese culinary traditions to your table with the freshest ingredients and traditional cooking methods.
+            Welcome to our restaurant. We bring authentic Japanese culinary traditions to your
+            table with the freshest ingredients and traditional cooking methods.
           </p>
           <p className="text-lg text-gray-700">
             From sushi to ramen, each dish is crafted with care and passion for perfection.
