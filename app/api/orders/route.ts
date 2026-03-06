@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     const deliveryFeeCents = type === 'DELIVERY' && settings
       ? settings.deliveryFeeCents
       : 0
-    const taxRate = settings?.taxRate || 0.0875
+    const taxRate = settings?.taxRate ? Number(settings.taxRate) : 0.0875
     const taxCents = Math.round((subtotalCents + deliveryFeeCents) * taxRate)
     const totalCents = subtotalCents + deliveryFeeCents + taxCents
 
