@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 
 export default function Navbar() {
@@ -10,8 +11,11 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-jp-black bg-opacity-95 backdrop-blur-sm border-b border-gray-800">
       <div className="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
-        <Link href="/" className="text-jp-cream font-serif text-xl font-bold tracking-wide">
-          🍣 Yama Sushi
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.webp" alt="Japanese Yama Sushi" width={44} height={44} className="object-contain" />
+          <span className="text-jp-cream font-serif font-bold text-lg leading-tight hidden sm:block">
+            Japanese Yama Sushi
+          </span>
         </Link>
 
         {/* Desktop Nav */}

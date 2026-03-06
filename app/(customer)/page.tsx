@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+import HeroSlider from '@/components/layout/HeroSlider'
 
 const FeaturedItemsGrid = dynamic(
   () => import('@/components/menu/FeaturedItemsGrid'),
@@ -9,52 +10,15 @@ const FeaturedItemsGrid = dynamic(
 )
 
 export const metadata: Metadata = {
-  title: 'Japanese Yama Sushi | London',
-  description: 'Authentic Japanese sushi, ramen and hot dishes in London',
+  title: 'Japanese Yama Sushi | 6 Trinity St, London',
+  description: 'Authentic Japanese sushi, ramen and hot dishes — freshly made every day at 6 Trinity St, London',
 }
 
 export default function HomePage() {
   return (
     <div className="w-full">
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/restaurant.webp"
-            alt="Japanese Yama Sushi"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-35" />
-        </div>
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <p className="text-jp-gold text-lg tracking-[0.3em] mb-4 font-light">
-            本格日本料理
-          </p>
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-4 leading-tight">
-            Japanese Yama Sushi
-          </h1>
-          <p className="text-xl text-gray-300 mb-10 font-light tracking-wide">
-            Freshly Made Every Day — 6 Trinity St, London
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/menu"
-              className="bg-jp-red text-white px-10 py-4 rounded-none font-semibold tracking-widest text-sm hover:bg-red-700 transition-colors uppercase">
-              Order Now
-            </Link>
-            <Link href="/reservations"
-              className="border-2 border-white text-white px-10 py-4 rounded-none font-semibold tracking-widest text-sm hover:bg-white hover:text-black transition-colors uppercase">
-              Reserve a Table
-            </Link>
-          </div>
-        </div>
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white opacity-70 animate-bounce">
-          <div className="w-px h-12 bg-white mx-auto mb-2" />
-          <p className="text-xs tracking-widest">SCROLL</p>
-        </div>
-      </section>
+      {/* Hero Slider */}
+      <HeroSlider />
 
       {/* 10% Off Promo Banner */}
       <div className="bg-jp-gold py-5 text-center">
