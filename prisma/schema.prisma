@@ -1,0 +1,177 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  passwordHash String
+  role  String  @default("admin") // "admin", "staff"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Category {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  description String?
+  displayOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  menuItems MenuItem[]
+
+  @@map("categories")
+}
+
+model MenuItem {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  priceCents  Int     // Always store in cents (e.g., $9.99 = 999)
+  imageUrl    String?
+  isAvailable Boolean @default(true)
+  isFeatured  Boolean @default(false)
+  isSpicy     Boolean @default(false)
+  isVegetarian Boolean @default(false)
+  categoryId  Int
+  displayOrder Int @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+
+  @@index([categoryId])
+  @@map("menu_items")
+}
+
+model Order {
+  id          Int     @id @default(autoincrement())
+  orderNumber String  @unique // e.g., "ORD-2024-0001"
+  status      String  @default("PENDING") // PENDING, CONFIRMED, PREPARING, READY, DELIVERED, CANCELLED
+  type        String  // PICKUP, DELIVERY
+
+  // Customer info
+  customerName String
+  customerEmail String
+  customerPhone String
+
+  // Delivery info (if type == DELIVERY)
+  deliveryAddress String?
+  deliveryCity String?
+  deliveryZip String?
+
+  // Pricing (all in cents)
+  subtotalCents Int
+  deliveryFeeCents Int @default(0)
+  taxCents Int
+  totalCents Int
+
+  // Payment
+  stripePaymentIntentId String?
+  paymentStatus String @default("PENDING") // PENDING, SUCCEEDED, FAILED
+
+  // Pickup time
+  pickupTime DateTime?
+  estimatedReadyTime DateTime?
+
+  // Notes
+  specialInstructions String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+
+  @@index([orderNumber])
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id          Int     @id @default(autoincrement())
+  orderId     Int
+  menuItemId  Int
+  quantity    Int
+  unitPriceCents Int // Snapshot of price at order time
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem MenuItem @relation(fields: [menuItemId], references: [id])
+
+  @@index([orderId])
+  @@index([menuItemId])
+  @@map("order_items")
+}
+
+model Reservation {
+  id          Int     @id @default(autoincrement())
+  confirmationCode String @unique // e.g., "RES-A3F9"
+  status      String  @default("CONFIRMED") // CONFIRMED, COMPLETED, CANCELLED
+
+  // Guest info
+  guestName   String
+  guestEmail  String
+  guestPhone  String
+  partySize   Int
+  specialRequests String?
+
+  // Reservation details
+  reservationDate DateTime // Date only, stored as DateTime at midnight
+  timeSlot    String  // e.g., "19:00", "19:30", "20:00"
+  tableNumber Int?    // Assigned by admin
+
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([reservationDate, timeSlot, tableNumber])
+  @@index([reservationDate])
+  @@index([confirmationCode])
+  @@map("reservations")
+}
+
+model RestaurantSettings {
+  id          Int     @id @default(autoincrement())
+
+  // Operating hours (JSON string, e.g., {"monday": {"open": "10:00", "close": "22:00"}, ...})
+  operatingHours String @default("{}")
+
+  // Reservation settings
+  maxPartySize Int @default(10)
+  maxReservationsPerSlot Int @default(8)
+  minReservationAdvanceMinutes Int @default(30)
+  maxReservationAdvanceDays Int @default(60)
+
+  // Order settings
+  maxOrdersPerHour Int @default(50)
+  deliveryFeeMinOrderCents Int @default(1500) // $15 minimum for delivery
+  deliveryFeeCents Int @default(350) // $3.50 delivery fee
+
+  // Tax
+  taxRate Decimal @default(0.0875) // 8.75%
+
+  // Restaurant info
+  restaurantName String @default("Japanese Restaurant")
+  restaurantPhone String?
+  restaurantEmail String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("restaurant_settings")
+}

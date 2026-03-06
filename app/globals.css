@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 60 29% 97%;
+    --foreground: 20 14% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 20 14% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14% 4%;
+
+    --muted: 20 14% 91%;
+    --muted-foreground: 20 7% 29%;
+
+    --accent: 0 84% 60%;
+    --accent-foreground: 60 30% 96%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 60 30% 96%;
+
+    --border: 20 6% 94%;
+    --input: 20 6% 94%;
+    --ring: 0 84% 60%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 20 14% 4%;
+    --foreground: 60 30% 96%;
+
+    --card: 20 13% 7%;
+    --card-foreground: 60 30% 96%;
+
+    --popover: 20 13% 7%;
+    --popover-foreground: 60 30% 96%;
+
+    --muted: 20 12% 20%;
+    --muted-foreground: 20 13% 73%;
+
+    --accent: 0 84% 60%;
+    --accent-foreground: 20 14% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 60 30% 96%;
+
+    --border: 20 13% 15%;
+    --input: 20 13% 15%;
+    --ring: 0 84% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Japanese Restaurant Custom Styling */
+body {
+  font-family: var(--font-inter), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-noto-serif-jp), serif;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #1A1A1A 0%, #2A2A2A 100%);
+  color: #FAF7F2;
+}
+
+.featured-section {
+  background-color: #FAF7F2;
+}
+
+.accent-red {
+  color: #C62828;
+}
+
+.accent-gold {
+  color: #D4AF37;
+}
