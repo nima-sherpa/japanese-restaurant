@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { X, Flame, Leaf, Minus, Plus } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
+import { useCart } from '@/contexts/CartContext'
 
 interface MenuItemModalProps {
   id: number
@@ -27,10 +28,15 @@ export default function MenuItemModal({
   onClose,
 }: MenuItemModalProps) {
   const [quantity, setQuantity] = useState(1)
+  const { addItem } = useCart()
 
   const handleAddToCart = () => {
-    // This will be connected to CartProvider later
-    console.log(`Added ${quantity} x ${name} to cart`)
+    addItem({
+      menuItemId: id,
+      quantity,
+      name,
+      priceCents,
+    })
     onClose()
   }
 
