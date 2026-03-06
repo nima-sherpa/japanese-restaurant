@@ -53,10 +53,10 @@ export default function MenuItemCard({
             </h3>
             <div className="flex gap-1 flex-shrink-0">
               {isSpicy && (
-                <Flame className="w-4 h-4 text-jp-red" title="Spicy" />
+                <Flame className="w-4 h-4 text-jp-red" aria-label="Spicy" />
               )}
               {isVegetarian && (
-                <Leaf className="w-4 h-4 text-green-600" title="Vegetarian" />
+                <Leaf className="w-4 h-4 text-green-600" aria-label="Vegetarian" />
               )}
             </div>
           </div>

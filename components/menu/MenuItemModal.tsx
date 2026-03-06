@@ -74,10 +74,10 @@ export default function MenuItemModal({
               <p className="text-gray-600">{description}</p>
               <div className="flex gap-2">
                 {isSpicy && (
-                  <Flame className="w-5 h-5 text-jp-red" title="Spicy" />
+                  <Flame className="w-5 h-5 text-jp-red" aria-label="Spicy" />
                 )}
                 {isVegetarian && (
-                  <Leaf className="w-5 h-5 text-green-600" title="Vegetarian" />
+                  <Leaf className="w-5 h-5 text-green-600" aria-label="Vegetarian" />
                 )}
               </div>
             </div>
