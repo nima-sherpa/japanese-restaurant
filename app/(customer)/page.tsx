@@ -20,8 +20,8 @@ export default function HomePage() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=1920&q=80"
-            alt="Japanese Restaurant"
+            src="/hero-bg.jpg"
+            alt="Japanese Yama Sushi"
             fill
             className="object-cover"
             priority
@@ -55,6 +55,14 @@ export default function HomePage() {
           <p className="text-xs tracking-widest">SCROLL</p>
         </div>
       </section>
+
+      {/* 10% Off Promo Banner */}
+      <div className="bg-jp-gold py-5 text-center">
+        <p className="text-jp-black font-bold text-lg tracking-wide">
+          🎉 ORDER FROM OUR WEBSITE & GET <span className="underline">10% OFF</span> YOUR ENTIRE ORDER!
+        </p>
+        <p className="text-jp-black text-sm mt-1 opacity-80">Use code <span className="font-bold">WEB10</span> at checkout — exclusive online discount</p>
+      </div>
 
       {/* Banner Strip */}
       <div className="bg-jp-red py-4">
@@ -147,6 +155,56 @@ export default function HomePage() {
                 <div className="text-5xl mb-5">{item.icon}</div>
                 <h3 className="text-xl font-serif font-bold text-jp-black mb-3">{item.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 px-4 bg-jp-black">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-jp-gold text-sm tracking-[0.3em] uppercase mb-3">What Our Guests Say</p>
+            <h2 className="text-5xl font-serif font-bold text-white mb-4">Reviews</h2>
+            <div className="flex justify-center gap-1 mb-2">
+              {[...Array(5)].map((_, i) => <span key={i} className="text-jp-gold text-xl">★</span>)}
+            </div>
+            <p className="text-gray-400 text-sm">5.0 on Google</p>
+            <div className="w-16 h-px bg-jp-gold mx-auto mt-4" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: 'Sarah M.',
+                stars: 5,
+                text: 'Absolutely amazing food! The salmon sushi boxes are the best I\'ve had in London. Fresh, beautifully presented and great value. Will definitely be back!',
+              },
+              {
+                name: 'James T.',
+                stars: 5,
+                text: 'The ramen here is outstanding — rich broth, perfectly cooked noodles. Staff are so friendly and the atmosphere is lovely. Highly recommend!',
+              },
+              {
+                name: 'Priya K.',
+                stars: 5,
+                text: 'We came for a group dinner and everyone loved it. The hot dishes are incredible and the sushi is so fresh. Authentic Japanese experience in London.',
+              },
+            ].map(review => (
+              <div key={review.name} className="bg-white/5 border border-white/10 p-8">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(review.stars)].map((_, i) => <span key={i} className="text-jp-gold">★</span>)}
+                </div>
+                <p className="text-gray-300 leading-relaxed mb-6 italic">"{review.text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-jp-gold/20 flex items-center justify-center text-jp-gold font-bold">
+                    {review.name[0]}
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">{review.name}</p>
+                    <p className="text-gray-500 text-xs">Google Review</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
