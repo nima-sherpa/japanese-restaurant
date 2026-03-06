@@ -19,7 +19,9 @@ async function main() {
   })
   console.log('Created admin user:', adminUser.email)
 
-  // Clear existing menu items and categories to avoid duplicates
+  // Clear existing data in dependency order to avoid FK constraint errors
+  await prisma.orderItem.deleteMany({})
+  await prisma.order.deleteMany({})
   await prisma.menuItem.deleteMany({})
   await prisma.category.deleteMany({})
 
