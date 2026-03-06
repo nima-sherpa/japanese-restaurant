@@ -42,7 +42,7 @@ function cartReducer(state: Cart, action: CartAction): Cart {
       if (existingItem) {
         return {
           ...state,
-          items: state.items.map(item =>
+          items: state.items.map((item: any) =>
             item.menuItemId === action.payload.menuItemId
               ? { ...item, quantity: item.quantity + action.payload.quantity }
               : item
@@ -64,7 +64,7 @@ function cartReducer(state: Cart, action: CartAction): Cart {
     case 'UPDATE_QUANTITY':
       return {
         ...state,
-        items: state.items.map(item =>
+        items: state.items.map((item: any) =>
           item.menuItemId === action.payload.menuItemId
             ? { ...item, quantity: action.payload.quantity }
             : item
