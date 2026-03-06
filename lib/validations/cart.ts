@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 export const cartItemSchema = z.object({
-  menuItemId: number,
+  menuItemId: z.number().int().positive(),
   quantity: z.number().int().positive(),
-  name: string,
+  name: z.string(),
   priceCents: z.number().int().positive(),
 })
 

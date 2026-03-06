@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { X, Minus, Plus, Trash2, ShoppingCart } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
+import { CartItem } from '@/lib/validations/cart'
 import { formatCurrency } from '@/lib/utils'
 
 export default function CartDrawer() {
@@ -60,8 +61,8 @@ export default function CartDrawer() {
             </div>
           ) : (
             <div className="space-y-6">
-              {cart.items.map((item: any) => (
-                <div key={String(item.menuItemId)} className="border-b pb-6">
+              {cart.items.map((item: CartItem) => (
+                <div key={item.menuItemId} className="border-b pb-6">
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="font-semibold text-jp-black">{item.name}</h3>

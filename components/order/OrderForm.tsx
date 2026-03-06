@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/contexts/CartContext'
+import { CartItem } from '@/lib/validations/cart'
 import { formatCurrency } from '@/lib/utils'
 
 export function OrderForm() {
@@ -71,7 +72,7 @@ export function OrderForm() {
           deliveryAddress,
           deliveryCity,
           deliveryZip,
-          items: cart.items.map((item: any) => ({
+          items: cart.items.map((item: CartItem) => ({
             menuItemId: item.menuItemId,
             quantity: item.quantity,
           })),
@@ -241,8 +242,8 @@ export function OrderForm() {
         <h3 className="text-lg font-semibold text-jp-black mb-4">Order Summary</h3>
 
         <div className="space-y-4 mb-6 max-h-64 overflow-y-auto">
-          {cart.items.map((item: any) => (
-            <div key={String(item.menuItemId)} className="flex justify-between text-sm">
+          {cart.items.map((item: CartItem) => (
+            <div key={item.menuItemId} className="flex justify-between text-sm">
               <span>
                 {item.name} x {item.quantity}
               </span>

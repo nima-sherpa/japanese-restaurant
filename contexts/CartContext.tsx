@@ -37,12 +37,12 @@ function cartReducer(state: Cart, action: CartAction): Cart {
   switch (action.type) {
     case 'ADD_ITEM': {
       const existingItem = state.items.find(
-        item => item.menuItemId === action.payload.menuItemId
+        (item: CartItem) => item.menuItemId === action.payload.menuItemId
       )
       if (existingItem) {
         return {
           ...state,
-          items: state.items.map((item: any) =>
+          items: state.items.map((item: CartItem) =>
             item.menuItemId === action.payload.menuItemId
               ? { ...item, quantity: item.quantity + action.payload.quantity }
               : item
@@ -58,13 +58,13 @@ function cartReducer(state: Cart, action: CartAction): Cart {
     case 'REMOVE_ITEM':
       return {
         ...state,
-        items: state.items.filter(item => item.menuItemId !== action.payload),
+        items: state.items.filter((item: CartItem) => item.menuItemId !== action.payload),
       }
 
     case 'UPDATE_QUANTITY':
       return {
         ...state,
-        items: state.items.map((item: any) =>
+        items: state.items.map((item: CartItem) =>
           item.menuItemId === action.payload.menuItemId
             ? { ...item, quantity: action.payload.quantity }
             : item
@@ -75,10 +75,7 @@ function cartReducer(state: Cart, action: CartAction): Cart {
       return initialCart
 
     case 'SET_TYPE':
-      return {
-        ...state,
-        type: action.payload,
-      }
+      return { ...state, type: action.payload }
 
     case 'SET_DELIVERY_ADDRESS':
       return {
@@ -99,7 +96,6 @@ function cartReducer(state: Cart, action: CartAction): Cart {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, dispatch] = useReducer(cartReducer, initialCart)
 
-  // Load from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
@@ -112,19 +108,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  // Save to localStorage whenever cart changes
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cart))
   }, [cart])
 
-  const addItem = (item: CartItem) => {
-    dispatch({ type: 'ADD_ITEM', payload: item })
-  }
-
-  const removeItem = (menuItemId: number) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: menuItemId })
-  }
-
+  const addItem = (item: CartItem) => dispatch({ type: 'ADD_ITEM', payload: item })
+  const removeItem = (menuItemId: number) => dispatch({ type: 'REMOVE_ITEM', payload: menuItemId })
   const updateQuantity = (menuItemId: number, quantity: number) => {
     if (quantity <= 0) {
       removeItem(menuItemId)
@@ -132,52 +121,29 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: 'UPDATE_QUANTITY', payload: { menuItemId, quantity } })
     }
   }
+  const clearCart = () => dispatch({ type: 'CLEAR_CART' })
+  const setOrderType = (type: 'PICKUP' | 'DELIVERY') => dispatch({ type: 'SET_TYPE', payload: type })
+  const setDeliveryAddress = (address: string, city: string, zip: string) =>
+    dispatch({ type: 'SET_DELIVERY_ADDRESS', payload: { address, city, zip } })
 
-  const clearCart = () => {
-    dispatch({ type: 'CLEAR_CART' })
-  }
+  const getTotalCents = () =>
+    cart.items.reduce((total: number, item: CartItem) => total + item.priceCents * item.quantity, 0)
 
-  const setOrderType = (type: 'PICKUP' | 'DELIVERY') => {
-    dispatch({ type: 'SET_TYPE', payload: type })
-  }
+  const getItemCount = () =>
+    cart.items.reduce((count: number, item: CartItem) => count + item.quantity, 0)
 
-  const setDeliveryAddress = (address: string, city: string, zip: string) => {
-    dispatch({
-      type: 'SET_DELIVERY_ADDRESS',
-      payload: { address, city, zip },
-    })
-  }
-
-  const getTotalCents = () => {
-    return cart.items.reduce(
-      (total: number, item: any) => total + item.priceCents * item.quantity,
-      0
-    )
-  }
-
-  const getItemCount = () => {
-    return cart.items.reduce((count: number, item: any) => count + item.quantity, 0)
-  }
-
-  const value: CartContextType = {
-    cart,
-    addItem,
-    removeItem,
-    updateQuantity,
-    clearCart,
-    setOrderType,
-    setDeliveryAddress,
-    getTotalCents,
-    getItemCount,
-  }
-
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>
+  return (
+    <CartContext.Provider value={{
+      cart, addItem, removeItem, updateQuantity, clearCart,
+      setOrderType, setDeliveryAddress, getTotalCents, getItemCount,
+    }}>
+      {children}
+    </CartContext.Provider>
+  )
 }
 
 export function useCart() {
   const context = useContext(CartContext)
-  if (context === undefined) {
-    throw new Error('useCart must be used within CartProvider')
-  }
+  if (context === undefined) throw new Error('useCart must be used within CartProvider')
   return context
 }
