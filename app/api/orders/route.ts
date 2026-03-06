@@ -39,13 +39,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch all menu items to verify prices server-side
-    const menuItemIds = items.map(item => item.menuItemId)
+    const menuItemIds = items.map((item: any) => item.menuItemId)
     const menuItems = await prisma.menuItem.findMany({
       where: { id: { in: menuItemIds } },
     })
 
     // Verify all items exist and create lookup map
-    const menuItemMap = new Map(menuItems.map(item => [item.id, item]))
+    const menuItemMap = new Map(menuItems.map((item: any) => [item.id, item]))
     for (const item of items) {
       if (!menuItemMap.has(item.menuItemId)) {
         return NextResponse.json(
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
         totalCents,
         specialInstructions,
         orderItems: {
-          create: items.map(item => {
+          create: items.map((item: any) => {
             const menuItem = menuItemMap.get(item.menuItemId)!
             return {
               menuItemId: item.menuItemId,

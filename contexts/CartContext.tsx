@@ -150,13 +150,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const getTotalCents = () => {
     return cart.items.reduce(
-      (total, item) => total + item.priceCents * item.quantity,
+      (total: number, item: any) => total + item.priceCents * item.quantity,
       0
     )
   }
 
   const getItemCount = () => {
-    return cart.items.reduce((count, item) => count + item.quantity, 0)
+    return cart.items.reduce((count: number, item: any) => count + item.quantity, 0)
   }
 
   const value: CartContextType = {
