@@ -1,6 +1,13 @@
 import useSWR from 'swr'
 
-const fetcher = (url: string) => fetch(url).then(r => r.json())
+// Throw on non-200 so SWR sets error state instead of data
+const fetcher = async (url: string) => {
+  const res = await fetch(url)
+  if (!res.ok) throw new Error('Failed to fetch')
+  const data = await res.json()
+  // Ensure we always return an array
+  return Array.isArray(data) ? data : []
+}
 
 export function useMenuItems(categoryId?: number) {
   const url = categoryId
