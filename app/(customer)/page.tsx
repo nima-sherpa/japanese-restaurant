@@ -26,7 +26,7 @@ export default function HomePage() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black bg-opacity-60" />
+          <div className="absolute inset-0 bg-black bg-opacity-35" />
         </div>
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <p className="text-jp-gold text-lg tracking-[0.3em] mb-4 font-light">

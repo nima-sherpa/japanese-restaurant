@@ -141,6 +141,41 @@ export async function sendOrderConfirmationToCustomer(order: OrderEmailData) {
   await sendEmail(order.customerEmail, `Order Confirmed — ${order.orderNumber}`, html)
 }
 
+// Email to CUSTOMER when order is READY for pickup
+export async function sendOrderReadyNotification(order: {
+  orderNumber: string
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+}) {
+  const html = `
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+      <div style="background:#1A1A1A;padding:20px;text-align:center">
+        <h1 style="color:white;margin:0">🍣 Japanese Yama Sushi</h1>
+      </div>
+      <div style="padding:32px;background:#FAF7F2;text-align:center">
+        <p style="font-size:48px;margin:0">🎉</p>
+        <h2 style="color:#2e7d32;margin:12px 0">Your Order is Ready!</h2>
+        <p style="font-size:28px;font-weight:bold;color:#1A1A1A;letter-spacing:2px">${order.orderNumber}</p>
+        <p style="color:#666">Please come collect your order — it's freshly prepared and waiting for you!</p>
+      </div>
+      <div style="padding:24px;background:#fff;text-align:center">
+        <p style="background:#e8f5e9;padding:16px;border-radius:8px;margin:0">
+          📍 <strong>6 Trinity St, London, SE1 1DB</strong><br/>
+          📞 If you have any questions, please call us
+        </p>
+        <p style="color:#999;font-size:12px;margin-top:16px">Japanese Yama Sushi — Freshly Made Every Day</p>
+      </div>
+    </div>
+  `
+
+  await sendEmail(
+    order.customerEmail,
+    `✅ Your Order ${order.orderNumber} is Ready for Pickup!`,
+    html
+  )
+}
+
 // Email to CUSTOMER confirming reservation
 export async function sendReservationConfirmation(data: {
   guestName: string
