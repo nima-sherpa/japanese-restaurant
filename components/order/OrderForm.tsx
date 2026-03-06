@@ -71,7 +71,7 @@ export function OrderForm() {
           deliveryAddress,
           deliveryCity,
           deliveryZip,
-          items: cart.items.map(item => ({
+          items: cart.items.map((item: any) => ({
             menuItemId: item.menuItemId,
             quantity: item.quantity,
           })),

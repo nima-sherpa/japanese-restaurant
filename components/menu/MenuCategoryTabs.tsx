@@ -52,7 +52,7 @@ export default function MenuCategoryTabs({
           >
             All
           </button>
-          {categories.map((category) => (
+          {categories.map((category: any) => (
             <button
               key={category.id}
               onClick={() => handleCategoryChange(category.id)}

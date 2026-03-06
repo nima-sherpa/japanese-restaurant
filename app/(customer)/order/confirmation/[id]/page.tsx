@@ -95,7 +95,7 @@ export default async function ConfirmationPage({
 
           {/* Items */}
           <div className="space-y-4 mb-6 border-b pb-6">
-            {order.orderItems.map(item => (
+            {order.orderItems.map((item: any) => (
               <div key={item.id} className="flex justify-between">
                 <div>
                   <p className="font-semibold text-jp-black">{item.menuItem.name}</p>
